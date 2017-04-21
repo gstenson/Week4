@@ -45,7 +45,16 @@ setAllInOne <- rbind(mrg_train, mrg_test)
 
 
 colNames <- colnames(setAllInOne)
-
+-----------------FIX
+names(Data)<-gsub("^t", "time", names(Data))
+names(Data)<-gsub("^f", "frequency", names(Data))
+names(Data)<-gsub("Acc", "Accelerometer", names(Data))
+names(Data)<-gsub("Gyro", "Gyroscope", names(Data))
+names(Data)<-gsub("Mag", "Magnitude", names(Data))
+names(Data)<-gsub("BodyBody", "Body", names(Data))
+---------------------
+  
+  
 mean_and_std <- (grepl("activityId" , colNames) | 
                    grepl("subjectId" , colNames) | 
                    grepl("mean.." , colNames) | 
@@ -54,6 +63,7 @@ mean_and_std <- (grepl("activityId" , colNames) |
 setWithActivityNames <- merge(setForMeanAndStd, activityLabels,
                               by='activityId',
                               all.x=TRUE)
+
 
 secTidySet <- aggregate(. ~subjectId + activityId, setWithActivityNames, mean)
 secTidySet <- secTidySet[order(secTidySet$subjectId, secTidySet$activityId),]
