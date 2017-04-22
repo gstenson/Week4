@@ -9,6 +9,30 @@ The sensor signals (accelerometer and gyroscope) were pre-processed by applying 
 
 More information can be found [here](http://archive.ics.uci.edu/ml/datasets/Smartphone-Based+Recognition+of+Human+Activities+and+Postural+Transitions)
 
+## Transforms
+
+1) Apply names to data
+
+2) Clean up variable names
+
+
+
+colnames(x_train) <- features[,2] 
+colnames(y_train) <-"activityId"
+colnames(subject_train) <- "subjectId"
+
+colnames(x_test) <- features[,2] 
+colnames(y_test) <- "activityId"
+colnames(subject_test) <- "subjectId"
+
+colnames(activityLabels) <- c('activityId','activityType')
+
+mrg_train <- cbind(y_train, subject_train, x_train)
+mrg_test <- cbind(y_test, subject_test, x_test)
+setAllInOne <- rbind(mrg_train, mrg_test)
+
+
+
 ## Variables 
 
 Tidy data contains 180 rows and 68 columns. Each row has averaged variables for each subject and each activity.
