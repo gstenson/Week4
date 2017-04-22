@@ -31,7 +31,8 @@ This is the course project for the Getting and Cleaning Data Coursera course. Th
 **What is in this folder**
 ---------------------------
 
-1) a tidy data set as described below, 
+1) a tidy data set as described above, 
 2) a link to a Github repository with your script for performing the analysis, and 
 3) a code book that describes the variables, the data, and any transformations or work that you performed to clean up the data [here](https://github.com/gstenson/Week4/blob/master/CodeBook.md). 
+4) a data folder containing raw data
 
