@@ -9,7 +9,6 @@ download.file(fileURL, filename, method="curl")
 
 unzip(fileName,overwrite = TRUE)
 
-
 # Reading trainings tables:
 x_train <- read.table("./data/UCI HAR Dataset/train/X_train.txt")
 y_train <- read.table("./data/UCI HAR Dataset/train/y_train.txt")
@@ -38,20 +37,19 @@ colnames(subject_test) <- "subjectId"
 
 colnames(activityLabels) <- c('activityId','activityType')
 
-
 mrg_train <- cbind(y_train, subject_train, x_train)
 mrg_test <- cbind(y_test, subject_test, x_test)
-setAllInOne <- rbind(mrg_train, mrg_test)
+total_data <- rbind(mrg_train, mrg_test)
 
 
-colNames <- colnames(setAllInOne)
+colNames <- colnames(total_data)
 -----------------FIX
-names(Data)<-gsub("^t", "time", names(Data))
-names(Data)<-gsub("^f", "frequency", names(Data))
-names(Data)<-gsub("Acc", "Accelerometer", names(Data))
-names(Data)<-gsub("Gyro", "Gyroscope", names(Data))
-names(Data)<-gsub("Mag", "Magnitude", names(Data))
-names(Data)<-gsub("BodyBody", "Body", names(Data))
+names(total_data)<-gsub("^t", "time", names(total_data))
+names(total_data)<-gsub("^f", "frequency", names(total_data))
+names(total_data)<-gsub("Acc", "Accelerometer", names(total_data))
+names(total_data)<-gsub("Gyro", "Gyroscope", names(total_data))
+names(total_data)<-gsub("Mag", "Magnitude", names(total_data))
+names(total_data)<-gsub("BodyBody", "Body", names(total_data))
 ---------------------
   
   
@@ -60,6 +58,7 @@ mean_and_std <- (grepl("activityId" , colNames) |
                    grepl("mean.." , colNames) | 
                    grepl("std.." , colNames) 
 )
+setForMeanAndStd <- setAllInOne[ , mean_and_std == TRUE]
 setWithActivityNames <- merge(setForMeanAndStd, activityLabels,
                               by='activityId',
                               all.x=TRUE)
@@ -68,5 +67,4 @@ setWithActivityNames <- merge(setForMeanAndStd, activityLabels,
 secTidySet <- aggregate(. ~subjectId + activityId, setWithActivityNames, mean)
 secTidySet <- secTidySet[order(secTidySet$subjectId, secTidySet$activityId),]
 
-write.table(secTidySet, "secTidySet.txt", row.name=FALSE)
-setForMeanAndStd <- setAllInOne[ , mean_and_std == TRUE]
+write.table(secTidySet, "tidy.txt", row.name=FALSE)
