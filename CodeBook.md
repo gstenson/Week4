@@ -2,7 +2,7 @@
 
 This is a technical description of the data for the project. It describes the variables, the data, and any transformations performed to clean up the data.
 
-## Data
+## Background to Data
 The base data is on human activity recognition using smartphones.The experiments were carried out with a group of 30 volunteers within an age bracket of 19-48 years. They performed a protocol of activities composed of six basic activities: three static postures (standing, sitting, lying) and three dynamic activities (walking, walking downstairs and walking upstairs). The experiment also included postural transitions that occurred between the static postures. These are: stand-to-sit, sit-to-stand, sit-to-lie, lie-to-sit, stand-to-lie, and lie-to-stand. All the participants were wearing a smartphone (Samsung Galaxy S II) on the waist during the experiment execution. We captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz using the embedded accelerometer and gyroscope of the device. The experiments were video-recorded to label the data manually. The obtained dataset was randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data.
 
 The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of 561 features was obtained by calculating variables from the time and frequency domain. See 'features_info.txt' for more details.
@@ -37,30 +37,23 @@ setAllInOne <- rbind(mrg_train, mrg_test)
 
 Tidy data contains 180 rows and 68 columns. Each row has averaged variables for each subject and each activity.
 
-Only all the variables estimated from mean and standard deviation in the tidy set were kept.
-
-    mean(): Mean value
-    std(): Standard deviation
-
-The data were averaged based on subject and activity group.
-
 Subject column is numbered sequentially from 1 to 30. Activity column has 6 types as listed below.
 
-    WALKING
-    WALKING_UPSTAIRS
-    WALKING_DOWNSTAIRS
-    SITTING
-    STANDING
-    LAYING
+1) WALKING
+2) WALKING_UPSTAIRS
+3) WALKING_DOWNSTAIRS
+4) SITTING
+5) STANDING
+6) LAYING
 
 Names of Features are labelled using descriptive variable names.
 
-    t is replaced by time
-    Acc is replaced by accelerometer
-    Gyro is replaced by gyroscope
-    prefix f is replaced by frequency
-    Mag is replaced by magnitude
-    BodyBody is replaced by body
+1) t is replaced by time
+2) acc is replaced by accelerometer
+3) gyro is replaced by gyroscope
+4) prefix f is replaced by frequency
+5) mag is replaced by magnitude
+6) BodyBody is replaced by body
 
 This give us the feature names:
 
