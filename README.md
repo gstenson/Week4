@@ -17,14 +17,22 @@ This project contains an R script called run_analysis.R that does the following:
 
 **Steps Involved**
 --------------------
-1) 
-2) 
+This is the course project for the Getting and Cleaning Data Coursera course. The R script, run_analysis.R, does the following:
 
+1) Download the raw data file
+2) Unzip file into data folder
+3) Extract data using unzip
+4) Read training, test and activity label data
+5) Applies activity and subjectid columms in prepartion of merge
+6) Merge data
+7) Apply meaningful variables names to data
+8) Writes out tidy datat set.
 
 **What is in this folder**
 ---------------------------
 
-1) a tidy data set as described below, 
+1) a tidy data set as described above, 
 2) a link to a Github repository with your script for performing the analysis, and 
 3) a code book that describes the variables, the data, and any transformations or work that you performed to clean up the data [here](https://github.com/gstenson/Week4/blob/master/CodeBook.md). 
+4) a data folder containing raw data
 
