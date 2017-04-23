@@ -10,61 +10,58 @@ download.file(fileURL, filename, method="curl")
 unzip(fileName,overwrite = TRUE)
 
 # Reading trainings tables:
-x_train <- read.table("./data/UCI HAR Dataset/train/X_train.txt")
-y_train <- read.table("./data/UCI HAR Dataset/train/y_train.txt")
-subject_train <- read.table("./data/UCI HAR Dataset/train/subject_train.txt")
+xtrain <- read.table("./data/UCI HAR Dataset/train/X_train.txt")
+ytrain <- read.table("./data/UCI HAR Dataset/train/y_train.txt")
+subject_train_set <- read.table("./data/UCI HAR Dataset/train/subject_train.txt")
 
 # Reading testing tables:
-x_test <- read.table("./data/UCI HAR Dataset/test/X_test.txt")
-y_test <- read.table("./data/UCI HAR Dataset/test/y_test.txt")
-subject_test <- read.table("./data/UCI HAR Dataset/test/subject_test.txt")
+xtest <- read.table("./data/UCI HAR Dataset/test/X_test.txt")
+ytest <- read.table("./data/UCI HAR Dataset/test/y_test.txt")
+subject_test_set <- read.table("./data/UCI HAR Dataset/test/subject_test.txt")
 
 # Reading feature vector:
-features <- read.table('./data/UCI HAR Dataset/features.txt')
+features_table <- read.table('./data/UCI HAR Dataset/features.txt')
 
 # Reading activity labels:
-activityLabels = read.table('./data/UCI HAR Dataset/activity_labels.txt')
+activity_labels = read.table('./data/UCI HAR Dataset/activity_labels.txt')
 
+#Assign column and to test and train and get read for merge
+colnames(xtrain) <- features_table[,2] 
+colnames(ytrain) <-"activityId"
+colnames(subject_train_set) <- "subjectId"
+colnames(xtest) <- features_table[,2] 
+colnames(ytest) <- "activityId"
+colnames(subject_test_set) <- "subjectId"
+colnames(activity_labels) <- c('activityId','activityType')
 
+merge_train <- cbind(y_train, subject_train_set, xtrain)
+merge_test <- cbind(y_test, subject_test_set, xtest)
+total_data <- rbind(merge_train, merge_test)
 
-colnames(x_train) <- features[,2] 
-colnames(y_train) <-"activityId"
-colnames(subject_train) <- "subjectId"
-
-colnames(x_test) <- features[,2] 
-colnames(y_test) <- "activityId"
-colnames(subject_test) <- "subjectId"
-
-colnames(activityLabels) <- c('activityId','activityType')
-
-mrg_train <- cbind(y_train, subject_train, x_train)
-mrg_test <- cbind(y_test, subject_test, x_test)
-total_data <- rbind(mrg_train, mrg_test)
-
-
-colNames <- colnames(total_data)
------------------FIX
+#Now clean up the column names
+col_names <- colnames(total_data)
 names(total_data)<-gsub("^t", "time", names(total_data))
 names(total_data)<-gsub("^f", "frequency", names(total_data))
 names(total_data)<-gsub("Acc", "Accelerometer", names(total_data))
 names(total_data)<-gsub("Gyro", "Gyroscope", names(total_data))
 names(total_data)<-gsub("Mag", "Magnitude", names(total_data))
 names(total_data)<-gsub("BodyBody", "Body", names(total_data))
----------------------
-  
-  
-mean_and_std <- (grepl("activityId" , colNames) | 
-                   grepl("subjectId" , colNames) | 
-                   grepl("mean.." , colNames) | 
-                   grepl("std.." , colNames) 
+
+
+#Get index for items we are interested in
+mean_and_std_col <- (grepl("activityId" , col_names) | 
+                   grepl("subjectId" , col_names) | 
+                   grepl("mean.." , col_names) | 
+                   grepl("std.." , col_names) 
 )
-setForMeanAndStd <- setAllInOne[ , mean_and_std == TRUE]
-setWithActivityNames <- merge(setForMeanAndStd, activityLabels,
+#Narrow down from main set and merge with activyt
+set_for_mean_std <- tota_data[ , mean_and_std_col == TRUE]
+activity_names_set <- merge(set_for_mean_std, activityLabels,
                               by='activityId',
                               all.x=TRUE)
 
+#Aggregate data abd remove subjectid. Order data and then write
+tidy <- aggregate(. ~subjectId + activityId, activity_names_set, mean)
+tidy <- tidy[order(tidy$subjectId, tidy$activityId),]
 
-secTidySet <- aggregate(. ~subjectId + activityId, setWithActivityNames, mean)
-secTidySet <- secTidySet[order(secTidySet$subjectId, secTidySet$activityId),]
-
-write.table(secTidySet, "tidy.txt", row.name=FALSE)
+write.table(tidy, "tidy.txt", row.name=FALSE)
